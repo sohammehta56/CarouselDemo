@@ -1,11 +1,12 @@
-import { StyleSheet, Animated, View, Dimensions } from 'react-native';
+import { Animated, View, Dimensions } from 'react-native';
 import React from 'react';
+import { paginationStyles } from './styles';
 
 const { width } = Dimensions.get('screen');
 
-const Pagination = ({ data, scrollX, index }) => {
+export const Pagination = ({ data, scrollX, index }) => {
     return (
-        <View style={styles.container}>
+        <View style={paginationStyles.container}>
             {data.map((_, idx) => {
                 const inputRange = [(idx - 1) * width, idx * width, (idx + 1) * width];
 
@@ -23,7 +24,7 @@ const Pagination = ({ data, scrollX, index }) => {
 
                 const backgroundColor = scrollX?.interpolate({
                     inputRange,
-                    outputRange: ['#ccc', '#000', '#ccc'],
+                    outputRange: ['#ccc', '#fff', '#ccc'],
                     extrapolate: 'clamp',
                 });
 
@@ -31,7 +32,7 @@ const Pagination = ({ data, scrollX, index }) => {
                     <Animated.View
                         key={idx.toString()}
                         style={[
-                            styles.dot,
+                            paginationStyles.dot,
                             { width: dotWidth, backgroundColor, opacity }
                         ]}
                     />
@@ -43,23 +44,3 @@ const Pagination = ({ data, scrollX, index }) => {
 
 export default Pagination;
 
-const styles = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        bottom: 35,
-        flexDirection: 'row',
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    dot: {
-        width: 12,
-        height: 12,
-        borderRadius: 6,
-        marginHorizontal: 3,
-        backgroundColor: '#ccc',
-    },
-    dotActive: {
-        backgroundColor: '#000',
-    },
-});

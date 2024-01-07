@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
-import { StyleSheet, Text, View, Dimensions, Animated, Easing } from 'react-native';
-
-const { width, height } = Dimensions.get('screen');
+import { Text, View, Animated, Easing } from 'react-native';
+import { slideItemStyles } from './styles';
 
 const SlideItem = ({ item }) => {
     const translateYImage = useRef(new Animated.Value(40)).current;
@@ -24,12 +23,11 @@ const SlideItem = ({ item }) => {
 
 
     return (
-        <View style={styles.container}>
+        <View style={slideItemStyles.container}>
             <Animated.Image
                 source={item.img}
                 resizeMode="contain"
                 style={[
-                    styles.image,
                     {
                         transform: [
                             {
@@ -42,47 +40,17 @@ const SlideItem = ({ item }) => {
                                 translateY: translateYImage,
                             },
                         ],
-                        opacity: opacity,
+                        opacity: opacity
                     },
+                    slideItemStyles.image
                 ]}
             />
-            <View style={styles.content}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.description}>{item.description}</Text>
+            <View style={slideItemStyles.content}>
+                <Text style={slideItemStyles.title}>{item.title}</Text>
+                <Text style={slideItemStyles.description}>{item.description}</Text>
             </View>
         </View>
     );
 };
 
 export default SlideItem;
-
-const styles = StyleSheet.create({
-    container: {
-        width,
-        height,
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1
-    },
-    image: {
-        flex: 0.6,
-        width: '100%'
-    },
-    content: {
-        flex: 0.4,
-        flexWrap: 'wrap',
-        alignItems: 'center'
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#333',
-        flexWrap: 'wrap'
-    },
-    description: {
-        fontSize: 18,
-        marginVertical: 12,
-        color: '#333',
-        flexWrap: 'wrap'
-    }
-});
