@@ -2,5 +2,5 @@ This is a Demo project for Carousel we have in Hotstar and pagination we have in
 
 
 
-https://github.com/sohammehta56/CarouselDemo/assets/45820865/b6ae1788-1506-41cd-ba97-854fc5b39f01
+https://github.com/sohammehta56/CarouselDemo/assets/45820865/d0d6a6ec-5d4d-4129-8a55-61e2244e53f0
 
