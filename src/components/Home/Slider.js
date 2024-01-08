@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Animated, Dimensions, FlatList, View } from 'react-native';
 import Slides from '../../data';
 import SlideItem from './SlideItem';
@@ -27,7 +27,7 @@ const Slider = () => {
                 const newIndex = Math.floor(offsetX / Dimensions.get('window').width);
                 // Update index only if it has changed
                 if (newIndex !== index) {
-                    setIndex(newIndex);
+                    setIndex(index);
                 }
             },
         }
@@ -38,6 +38,7 @@ const Slider = () => {
     };
 
     const viewabilityConfigCallbackPairs = useRef([onViewableItemsChanged]).current;
+
 
     const viewabilityConfig = useRef({
         itemVisiblePercentThreshold: 50,
@@ -61,7 +62,7 @@ const Slider = () => {
         <View style={sliderStyles.mainContainer}>
             <FlatList
                 data={Slides}
-                renderItem={({ item }) => <SlideItem item={item} />}
+                renderItem={({ item }) => <SlideItem item={item} index={index} />}
                 keyExtractor={item => item.id}
                 horizontal
                 pagingEnabled
