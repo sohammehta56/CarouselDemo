@@ -7,6 +7,7 @@ import { sliderStyles } from './styles';
 
 const Slider = () => {
     const [index, setIndex] = useState(0);
+    const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
     const scrollX = useRef(new Animated.Value(0)).current;
     const flatListRef = useRef(null);
 
@@ -25,9 +26,11 @@ const Slider = () => {
             listener: event => {
                 const offsetX = event.nativeEvent.contentOffset.x;
                 const newIndex = Math.floor(offsetX / Dimensions.get('window').width);
+                setAutoScrollEnabled(true);
                 // Update index only if it has changed
                 if (newIndex !== index) {
-                    setIndex(index);
+                    setIndex(newIndex);
+
                 }
             },
         }
@@ -44,25 +47,36 @@ const Slider = () => {
         itemVisiblePercentThreshold: 50,
     }).current;
 
+    const handleTouchStart = () => {
+        setAutoScrollEnabled(false);
+    };
+
+    const handleTouchEnd = () => {
+        setAutoScrollEnabled(true);
+    };
+
     const scrollToNextItem = () => {
-        const newIndex = (index + 1) % Slides.length;
-        setIndex(newIndex);
-        flatListRef.current?.scrollToIndex({
-            index: newIndex,
-            animated: true,
-        });
+        if (autoScrollEnabled) {
+            const newIndex = (index + 1) % Slides.length;
+            setIndex(newIndex);
+            flatListRef.current?.scrollToIndex({
+                index: newIndex,
+                animated: true,
+            });
+        }
     };
 
     useEffect(() => {
         const intervalId = setInterval(scrollToNextItem, 3000);
         return () => clearInterval(intervalId);
-    }, [index]);
+    }, [index, autoScrollEnabled]);
 
     return (
         <View style={sliderStyles.mainContainer}>
             <FlatList
                 data={Slides}
-                renderItem={({ item }) => <SlideItem item={item} index={index} />}
+                renderItem={({ item }) => <SlideItem item={item} index={index} onTouchStart={handleTouchStart}
+                    onTouchEnd={handleTouchEnd} />}
                 keyExtractor={item => item.id}
                 horizontal
                 pagingEnabled
